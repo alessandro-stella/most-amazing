@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// Necessary for NextAuth
+model Account {
+  id                String  @id @default(cuid())
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  expires      DateTime
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Credentials {
+  id       String @id @default(cuid())
+  password String
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LinkingCredentials {
+  id String @id @default(cuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expires DateTime
+}
+
+model ResetPassword {
+  id String @id @default(cuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expires DateTime
+}
+
+// Tables for user and products
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  accounts Account[]
+  sessions Session[]
+
+  credentials   Credentials?
+
+  linkingCredentials LinkingCredentials?
+  resetPassword ResetPassword?
+
+  products Product[]
+  cart     Cart?
+  history  History?
+}
+
+model Product {
+  id            String     @id @default(cuid())
+  name          String
+  description   String
+  price         Float
+  shippingPrice Float?
+  categories    Category[]
+  images        Image[]
+  inStock       Int
+
+  orders         Order[]
+  hasBeenDeleted Boolean @default(false)
+
+  seller   User   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  sellerId String
+
+  @@index([sellerId])
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+}
+
+model Image {
+  id        Int     @id @default(autoincrement())
+  url       String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  @@index([productId])
+}
+
+model Cart {
+  id      Int     @id @default(autoincrement())
+  owner   User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String  @unique
+  orders  Order[]
+}
+
+model History {
+  id      Int     @id @default(autoincrement())
+  owner   User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String  @unique
+  orders  Order[]
+}
+
+model Order {
+  id       Int @id @default(autoincrement())
+  quantity Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  history   History? @relation(fields: [historyId], references: [id], onDelete: Cascade)
+  historyId Int?
+
+  cart   Cart? @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId Int?
+
+  @@index([productId])
+  @@index([historyId])
+  @@index([cartId])
+}
