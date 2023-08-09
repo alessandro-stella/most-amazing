@@ -10,7 +10,7 @@ export function getSessionCookie(session: Session): string {
         session.sessionToken,
         {
             httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
+            secure: env.NODE_ENV !== "development",
             expires: session.expires,
             sameSite: "strict",
             path: "/",
