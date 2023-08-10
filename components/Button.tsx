@@ -8,6 +8,7 @@ interface ButtonProps {
     onClick: () => void;
     isLoading?: boolean;
     isIcon?: boolean;
+    isDisabled?: boolean;
 }
 
 export default function Button({
@@ -15,8 +16,9 @@ export default function Button({
     color,
     size,
     onClick,
-    isLoading,
-    isIcon,
+    isLoading = false,
+    isIcon = false,
+    isDisabled = false,
 }: ButtonProps) {
     const colorVariants = {
         mint: {
@@ -40,14 +42,14 @@ export default function Button({
     return (
         <button
             className={`${
-                isLoading
+                isLoading || isDisabled
                     ? colorVariants[color].disabled
                     : colorVariants[color].active
             } ${colorVariants[color].style} ${sizeVariants[size].text} ${
                 !isIcon ? "flex-1" : "px-2"
-            } flex items-center justify-center rounded-lg border-2 font-bold shadow-sm shadow-slate-500 transition-all`}
+            } flex items-center justify-center rounded-lg border-2 font-bold shadow-sm shadow-slate-500 transition-all uppercase`}
             onClick={onClick}
-            disabled={isLoading}>
+            disabled={isLoading || isDisabled}>
             {isLoading && !isIcon ? (
                 <AiOutlineLoading
                     className="animate-spin"

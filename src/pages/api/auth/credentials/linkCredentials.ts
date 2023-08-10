@@ -32,6 +32,10 @@ export default async function linkCredentials(
         }
 
         if (user?.credentials) {
+            await prisma.linkingCredentials.deleteMany({
+                where: { userId },
+            });
+
             return res.status(400).json({
                 success: false,
                 error: "This user has already some credentials linked",

@@ -32,13 +32,15 @@ export default async function resetPassword(
         }
 
         if (!user?.credentials) {
+            await prisma.resetPassword.deleteMany({ where: { userId } });
+
             return res.status(400).json({
                 success: false,
                 error: "This user does not have credentials linked",
             });
         }
 
-        const hashedPassword = await hashPassword(password)
+        const hashedPassword = await hashPassword(password);
 
         try {
             await prisma.credentials.update({

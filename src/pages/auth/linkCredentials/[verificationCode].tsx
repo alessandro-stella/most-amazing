@@ -3,11 +3,14 @@ import Button from "components/Button";
 import InputField from "components/InputField";
 import AuthTemplate from "components/auth/AuthTemplate";
 import type { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useTimeout from "utils/hooks/useTimeout";
 import { prisma } from "~/server/db";
 
 export default function LinkCredentialsWithCode({ user }: { user: User }) {
+    const router = useRouter();
+
     const [password, setPassword] = useState("Pasquetta123");
     const [confirmPassword, setConfirmPassword] = useState("Pasquetta123");
 
@@ -22,6 +25,10 @@ export default function LinkCredentialsWithCode({ user }: { user: User }) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [startTimeout, setStartTimeout] = useState(false);
+
+    async function navigateLogin() {
+        await router.push("/auth/login");
+    }
 
     function resetErrors() {
         setPasswordError([]);
@@ -117,40 +124,56 @@ export default function LinkCredentialsWithCode({ user }: { user: User }) {
                 Link Credentials
             </div>
 
-            <InputField
-                type={showPassword ? "text" : "password"}
-                label="Password"
-                value={password}
-                setValue={setPassword}
-                isDisabled={isLoading || success}
-                isShown={showPassword}
-                setIsShown={setShowPassword}
-                error={passwordError}
-            />
+            <div className="flex flex-col gap-4">
+                <InputField
+                    type={showPassword ? "text" : "password"}
+                    label="Password"
+                    value={password}
+                    setValue={setPassword}
+                    isDisabled={isLoading || success || generalError !== ""}
+                    isShown={showPassword}
+                    setIsShown={setShowPassword}
+                    error={passwordError}
+                />
 
-            <InputField
-                type={showPassword ? "text" : "password"}
-                label="Confirm password"
-                value={confirmPassword}
-                setValue={setConfirmPassword}
-                isDisabled={isLoading || success}
-                isShown={showPassword}
-                setIsShown={setShowPassword}
-                error={confirmPasswordError}
-            />
+                <InputField
+                    type={showPassword ? "text" : "password"}
+                    label="Confirm password"
+                    value={confirmPassword}
+                    setValue={setConfirmPassword}
+                    isDisabled={isLoading || success || generalError !== ""}
+                    isShown={showPassword}
+                    setIsShown={setShowPassword}
+                    error={confirmPasswordError}
+                />
 
-            <Button
-                color="mint"
-                size="lg"
-                isLoading={isLoading}
-                onClick={() => void handleSubmit()}>
-                LINK CREDENTIALS
-            </Button>
+                {success && (
+                    <div className="text-mint-600">
+                        Password linked successfully!
+                    </div>
+                )}
 
-            {isLoading && <div>Loading...</div>}
-            {success && <div>Success!</div>}
+                {generalError && (
+                    <div className="text-red-500">{generalError}</div>
+                )}
+            </div>
 
-            {generalError && <div>{generalError}</div>}
+            {success || generalError !== "" ? (
+                <Button
+                    color="mint"
+                    size="lg"
+                    onClick={() => void navigateLogin()}>
+                    go back
+                </Button>
+            ) : (
+                <Button
+                    color="mint"
+                    size="lg"
+                    isLoading={isLoading}
+                    onClick={() => void handleSubmit()}>
+                    reset password
+                </Button>
+            )}
         </AuthTemplate>
     );
 }

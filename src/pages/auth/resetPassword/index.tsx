@@ -63,26 +63,31 @@ export default function ResetPassword() {
                 assistance. Happy logging in!
             </div>
 
-            <InputField
-                value={email}
-                type="text"
-                label="Email"
-                isDisabled={isLoading || emailSent}
-                setValue={setEmail}
-                error={emailError}
-            />
+            <div className="flex flex-col gap-4">
+                <InputField
+                    value={email}
+                    type="text"
+                    label="Email"
+                    isDisabled={isLoading || emailSent}
+                    setValue={setEmail}
+                    error={emailError}
+                />
+
+                {emailSent && (
+                    <div className="text-mint-600">
+                        Email sent successfully!
+                    </div>
+                )}
+            </div>
 
             <Button
                 color="mint"
                 size="lg"
                 isLoading={isLoading}
+                isDisabled={emailSent}
                 onClick={() => void handleSubmit()}>
                 SEND EMAIL
             </Button>
-
-            {emailSent && (
-                <div className="text-green-500">Email sent successfully</div>
-            )}
         </AuthTemplate>
     );
 }

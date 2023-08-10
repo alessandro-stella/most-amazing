@@ -116,6 +116,8 @@ export default function Login({ providers }: { providers: Provider[] }) {
                     error={passwordError}
                 />
 
+                <div className="h-2" />
+
                 <Link
                     href="/auth/resetPassword"
                     className="text-mint-800 underline hover:text-mint-700">

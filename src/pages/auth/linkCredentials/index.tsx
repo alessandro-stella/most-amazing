@@ -52,9 +52,10 @@ export default function LinkCredentials() {
     return (
         <AuthTemplate title="Link Credentials">
             <div className="text-center text-4xl font-bold">
-                Credentials not linked
+                Link Credentials
             </div>
-            <div>
+
+            <div className="mb-2">
                 There appears to be an account registered with this email using
                 third-party services that does not currently have a password. If
                 you want to set a password, enter your email again to confirm, a
@@ -62,26 +63,31 @@ export default function LinkCredentials() {
                 necessary to complete the process
             </div>
 
-            <InputField
-                value={email}
-                type="text"
-                label="Email"
-                isDisabled={isLoading || emailSent}
-                setValue={setEmail}
-                error={emailError}
-            />
+            <div className="flex flex-col gap-4">
+                <InputField
+                    value={email}
+                    type="text"
+                    label="Email"
+                    isDisabled={isLoading || emailSent}
+                    setValue={setEmail}
+                    error={emailError}
+                />
+
+                {emailSent && (
+                    <div className="text-mint-600">
+                        Email sent successfully!
+                    </div>
+                )}
+            </div>
 
             <Button
                 color="mint"
                 size="lg"
                 isLoading={isLoading}
+                isDisabled={emailSent}
                 onClick={() => void handleSubmit()}>
                 SEND EMAIL
             </Button>
-
-            {emailSent && (
-                <div className="text-green-500">Email sent successfully</div>
-            )}
         </AuthTemplate>
     );
 }
