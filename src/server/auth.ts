@@ -110,7 +110,7 @@ export const authOptions: NextAuthOptions = {
     ],
 
     pages: {
-        signIn: "/auth/signIn",
+        signIn: "/auth/login",
     },
 };
 

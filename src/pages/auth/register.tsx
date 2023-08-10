@@ -14,7 +14,7 @@ import RegistrationValidator from "utils/inputValidators/registrationValidator";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
 
-export default function SignIn({ providers }: { providers: Provider[] }) {
+export default function Register({ providers }: { providers: Provider[] }) {
     const router = useRouter();
 
     const [username, setUsername] = useState("Alessandro Stella");
@@ -274,9 +274,9 @@ export default function SignIn({ providers }: { providers: Provider[] }) {
                 <div>
                     Already one of us?{" "}
                     <Link
-                        href="/auth/signIn"
+                        href="/auth/login"
                         className="text-mint-800 underline hover:text-mint-700">
-                        Sign in
+                        Login
                     </Link>
                 </div>
             </div>

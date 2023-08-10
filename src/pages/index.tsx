@@ -55,7 +55,7 @@ export default function Home({
                 </div>
 
                 <div className="flex gap-2">
-                    <Link href="/auth/signIn">SIGN IN</Link>
+                    <Link href="/auth/login">LOGIN</Link>
                     <button onClick={() => void signOut()}>SIGN OUT</button>
 
                     <CategoryList

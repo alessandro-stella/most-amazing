@@ -11,15 +11,16 @@ export default function ProfilePage({ user }: { user: User }) {
                 <title>Profile</title>
             </Head>
 
-        <div className="p-4">
-            <div className="text-2xl">Profile</div>
-            <div>ID: {user.id}</div>
-            <div>Username: {user.name}</div>
-            <div>Email: {user.email}</div>
-            <div>Image {user.image ?? "NO IMAGE"}</div>
+            <div className="p-4">
+                <div className="text-2xl">Profile</div>
+                <div>ID: {user.id}</div>
+                <div>Username: {user.name}</div>
+                <div>Email: {user.email}</div>
+                <div>Image {user.image ?? "NO IMAGE"}</div>
 
-            <button onClick={() => void signOut()}>SIGN OUT</button>
-        </div></>
+                <button onClick={() => void signOut()}>SIGN OUT</button>
+            </div>
+        </>
     );
 }
 
@@ -36,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     return {
         redirect: {
-            destination: "/auth/signIn",
+            destination: "/auth/login",
             permanent: false,
         },
     };

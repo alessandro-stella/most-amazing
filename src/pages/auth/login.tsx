@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import useTimeout from "utils/hooks/useTimeout";
 import { getServerAuthSession } from "~/server/auth";
 
-export default function SignIn({ providers }: { providers: Provider[] }) {
+export default function Login({ providers }: { providers: Provider[] }) {
     const router = useRouter();
 
     const [email, setEmail] = useState("alessandro.stella2004@gmail.com");
@@ -43,11 +43,11 @@ export default function SignIn({ providers }: { providers: Provider[] }) {
         setStartTimeout(true);
     }, [emailError, passwordError]);
 
-    async function handleSignIn() {
+    async function handleLogin() {
         resetErrors();
         setIsLoading(true);
 
-        const response = (await fetch("/api/auth/credentials/signIn", {
+        const response = (await fetch("/api/auth/credentials/login", {
             method: "POST",
             body: JSON.stringify({
                 email,
@@ -90,8 +90,8 @@ export default function SignIn({ providers }: { providers: Provider[] }) {
     }
 
     return (
-        <AuthTemplate title="Sign In">
-            <div className="text-center text-4xl font-bold">Sign in</div>
+        <AuthTemplate title="Login">
+            <div className="text-center text-4xl font-bold">Login</div>
 
             <div className="flex flex-col">
                 <InputField
@@ -128,8 +128,8 @@ export default function SignIn({ providers }: { providers: Provider[] }) {
                     color="mint"
                     size="lg"
                     isLoading={isLoading}
-                    onClick={() => void handleSignIn()}>
-                    SIGN IN
+                    onClick={() => void handleLogin()}>
+                    LOGIN
                 </Button>
 
                 <div className="h-3" />

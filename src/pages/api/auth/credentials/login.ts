@@ -5,7 +5,7 @@ import { getSessionCookie } from "utils/functions/getSessionCookie";
 import { ZodError, z } from "zod";
 import { prisma } from "~/server/db";
 
-export default async function signIn(
+export default async function login(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
