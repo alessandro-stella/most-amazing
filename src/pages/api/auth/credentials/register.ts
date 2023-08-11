@@ -1,8 +1,10 @@
 import { Prisma } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
+import url from "rootUrl";
 import createSession from "utils/functions/createSession";
 import { getSessionCookie } from "utils/functions/getSessionCookie";
 import hashPassword from "utils/functions/hashPassword";
+import sendEmail from "utils/functions/sendEmail";
 import PasswordValidator from "utils/inputValidators/passwordValidator";
 import RegistrationValidator from "utils/inputValidators/registrationValidator";
 import { ZodError } from "zod";
@@ -34,6 +36,14 @@ export default async function register(
         });
 
         const newSession = await createSession(newUser);
+
+        console.log("Registering...");
+
+        await sendEmail({
+            email,
+            subject: "Welcome to Amazing!",
+            body: `Welcome ${username}! We're glad you're joining us, and we wish the best experience for you on our site! <a href="${url}">Visit Amazing<a/a>`,
+        });
 
         res.setHeader("Set-Cookie", getSessionCookie(newSession));
 

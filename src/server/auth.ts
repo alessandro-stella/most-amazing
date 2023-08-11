@@ -7,6 +7,8 @@ import {
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
+import url from "rootUrl";
+import sendEmail from "utils/functions/sendEmail";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 
@@ -54,7 +56,12 @@ export const authOptions: NextAuthOptions = {
                     include: { user: true },
                 });
 
-                if (dbAccount) return true;
+                if (dbAccount) {
+                    // NextAuth will handle the registration because there's
+                    // already a provider account linked to a user
+
+                    return true;
+                }
 
                 if (user.email) {
                     const dbUser = await prisma.user.findUnique({
@@ -63,8 +70,25 @@ export const authOptions: NextAuthOptions = {
                     });
 
                     if (!dbUser) {
+                        // NextAuth will handle the registration by creating
+                        // a new user linked to the new provider account
+
+                        try {
+                            await sendEmail({
+                                email: user.email,
+                                subject: "Welcome to Amazing!",
+                                body: `Welcome ${user.name}! We're glad you're joining us, and we wish the best experience for you on our site! <a href="${url}">Visit Amazing<a/a>`,
+                            });
+                        } catch (e) {
+                            return false;
+                        }
+
                         return true;
                     }
+
+                    // If you're using a new provider account to log in and
+                    // there's already a user with the same email, we'll create
+                    // and link the new account to the existing user
 
                     try {
                         await prisma.user.update({

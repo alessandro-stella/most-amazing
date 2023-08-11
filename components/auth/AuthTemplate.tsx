@@ -1,6 +1,7 @@
 import Waves from "components/auth/Waves";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 
 interface AuthTemplateProps {
@@ -9,6 +10,12 @@ interface AuthTemplateProps {
 }
 
 export default function AuthTemplate({ title, children }: AuthTemplateProps) {
+    const router = useRouter();
+
+    async function navigateHome() {
+        await router.push("/");
+    }
+
     return (
         <>
             <Head>
@@ -23,7 +30,9 @@ export default function AuthTemplate({ title, children }: AuthTemplateProps) {
                                 Welcome to
                             </div>
 
-                            <div className="flex w-1/2 flex-col items-center md:mb-10">
+                            <div
+                                className="flex w-1/2 cursor-pointer flex-col items-center md:mb-10"
+                                onClick={() => void navigateHome()}>
                                 <div className="logo-shadow relative aspect-video w-full">
                                     <Image
                                         style={{

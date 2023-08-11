@@ -171,7 +171,7 @@ export default function LinkCredentialsWithCode({ user }: { user: User }) {
                     size="lg"
                     isLoading={isLoading}
                     onClick={() => void handleSubmit()}>
-                    reset password
+                    link password
                 </Button>
             )}
         </AuthTemplate>

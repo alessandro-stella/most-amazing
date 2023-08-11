@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import hashPassword from "utils/functions/hashPassword";
+import sendEmail from "utils/functions/sendEmail";
 import PasswordValidator from "utils/inputValidators/passwordValidator";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
@@ -57,6 +58,13 @@ export default async function resetPassword(
                 error: "There's been an error during the process",
             });
         }
+
+        if (user.email)
+            await sendEmail({
+                email: user.email,
+                subject: "Successful password reset",
+                body: `Hi ${user.name}, you successfully changed your password!`,
+            });
 
         return res.status(200).json({ success: true, error: false });
     } catch (e) {
