@@ -1,11 +1,9 @@
 import type { Category, Product } from "@prisma/client";
 import CategoryList from "components/CategoryList";
-import ProductList from "components/ProductList";
+import ProductList from "components/HomePage";
+import NavBar from "components/NavBar";
 import type { GetServerSideProps } from "next";
-import { signOut } from "next-auth/react";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { prisma } from "~/server/db";
 
 /* 
@@ -42,25 +40,16 @@ export default function Home({
                 <title>Amazing</title>
             </Head>
 
-            <div className="min-h-screen gap-2 bg-green-200">
-                <div className="h-16 w-screen bg-slate-800 p-2">
-                    <div className="relative aspect-[4.42/1] h-full">
-                        <Image
-                            priority={true}
-                            src="/fullLogo-white.svg"
-                            alt="AMAZING"
-                            fill
-                        />
-                    </div>
-                </div>
+            <div className="flex min-h-screen flex-col bg-green-200">
+                <NavBar />
 
-                <div className="flex gap-2">
-                    <Link href="/auth/login">LOGIN</Link>
-                    <button onClick={() => void signOut()}>SIGN OUT</button>
+                <div className="flex flex-1 bg-green-500">
+                    {/* <Link href="/auth/login">LOGIN</Link> */}
 
                     <CategoryList
                         categories={categories?.length > 0 ? categories : []}
                     />
+
                     <ProductList
                         products={products?.length > 0 ? products : []}
                     />

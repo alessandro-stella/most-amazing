@@ -1,9 +1,10 @@
-import ProductCard from "./ProductCard";
 import type { Category, Product } from "@prisma/client";
 import { Context } from "context/Context";
 import { useContext } from "react";
+import HomeBanner from "./HomeBanner";
+import ProductCard from "./product/ProductCard";
 
-export default function ProductList({
+export default function HomePage({
     products,
 }: {
     products: (Product & {
@@ -13,12 +14,9 @@ export default function ProductList({
     const { selectedCategory } = useContext(Context);
 
     return (
-        <div>
-            <div>
-                Product:
-                {selectedCategory === ""
-                    ? "NO CATEGORY SELECTED"
-                    : selectedCategory}
+        <div className="flex-[6] bg-slate-50 p-6">
+            <div className="bg-white">
+                {selectedCategory === "" ? <HomeBanner /> : selectedCategory}
             </div>
 
             <div>

@@ -47,7 +47,7 @@ export default function Button({
                     : colorVariants[color].active
             } ${colorVariants[color].style} ${sizeVariants[size].text} ${
                 !isIcon ? "flex-1" : "px-2"
-            } flex items-center justify-center rounded-lg border-2 font-bold shadow-sm shadow-slate-500 transition-all uppercase`}
+            } flex items-center justify-center rounded-lg border-2 font-bold uppercase shadow-sm shadow-slate-400 transition-all`}
             onClick={onClick}
             disabled={isLoading || isDisabled}>
             {isLoading && !isIcon ? (

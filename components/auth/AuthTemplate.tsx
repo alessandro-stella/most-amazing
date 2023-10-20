@@ -23,7 +23,7 @@ export default function AuthTemplate({ title, children }: AuthTemplateProps) {
             </Head>
 
             <div className="flex min-h-screen max-w-[100vw] flex-col overflow-x-hidden md:flex-row md:overflow-visible">
-                <div className="flex min-w-0 flex-1 items-center justify-center bg-slate-800 md:pl-4">
+                <div className="flex min-w-0 flex-1 items-center justify-center bg-slate-700 md:pl-4">
                     <div className="flex h-full w-5/6 flex-col items-center justify-center gap-8 pt-4 md:pb-4 md:pt-0">
                         <div className="flex w-full flex-1 flex-col items-center justify-center gap-8">
                             <div className="hidden text-2xl text-white md:inline">
@@ -65,7 +65,7 @@ export default function AuthTemplate({ title, children }: AuthTemplateProps) {
                     </div>
                 </div>
 
-                <div className="flex flex-[1.8] flex-col bg-slate-800 md:min-h-screen md:flex-row">
+                <div className="flex flex-[1.8] flex-col bg-slate-700 md:min-h-screen md:flex-row">
                     <Waves />
 
                     <div className="flex flex-1 items-center justify-center bg-mint-400 py-4">
