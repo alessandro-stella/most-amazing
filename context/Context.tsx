@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction, createContext, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { createContext, useState } from "react";
 
 interface ContextType {
     selectedCategory: string;

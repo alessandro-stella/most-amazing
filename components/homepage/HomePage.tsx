@@ -2,7 +2,7 @@ import type { Category, Product } from "@prisma/client";
 import { Context } from "context/Context";
 import { useContext } from "react";
 import HomeBanner from "./HomeBanner";
-import ProductCard from "./product/ProductCard";
+import ProductCard from "../product/ProductCard";
 
 export default function HomePage({
     products,

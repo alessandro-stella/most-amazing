@@ -1,7 +1,7 @@
 import type { Category, Product } from "@prisma/client";
-import CategoryList from "components/CategoryList";
-import ProductList from "components/HomePage";
-import NavBar from "components/NavBar";
+import CategoryList from "components/homepage/CategoryList";
+import ProductList from "components/homepage/HomePage";
+import NavBar from "components/homepage/NavBar";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import { prisma } from "~/server/db";
@@ -40,12 +40,10 @@ export default function Home({
                 <title>Amazing</title>
             </Head>
 
-            <div className="flex min-h-screen flex-col bg-green-200">
-                <NavBar />
+            <div className="flex min-h-screen flex-col">
+                <NavBar categories={categories?.length > 0 ? categories : []} />
 
-                <div className="flex flex-1 bg-green-500">
-                    {/* <Link href="/auth/login">LOGIN</Link> */}
-
+                <div className="flex w-screen flex-1 ">
                     <CategoryList
                         categories={categories?.length > 0 ? categories : []}
                     />

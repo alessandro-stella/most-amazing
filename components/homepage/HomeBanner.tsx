@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function HomeBanner() {
     return (
-        <div className="flex w-full gap-10 rounded-xl bg-gradient-to-r from-mint-500 to-mint-300 shadow-md">
+        <div className="z-[5] flex w-full gap-10 rounded-xl bg-gradient-to-tr from-mint-500 to-mint-300 shadow-md">
             <div className="flex flex-col gap-8 p-8">
                 <div className="text-6xl font-bold text-white">
                     Free Delivery!
@@ -19,7 +19,7 @@ export default function HomeBanner() {
             </div>
 
             <div className="flex flex-1 items-center justify-center overflow-hidden">
-                <div className="relative aspect-square h-full scale-[4]">
+                <div className="relative  aspect-square h-full scale-[4]">
                     <Image
                         priority={true}
                         src="/arrows.svg"

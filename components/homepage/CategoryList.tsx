@@ -1,6 +1,6 @@
 import type { Category } from "@prisma/client";
 import { Context } from "context/Context";
-import { signOut } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { useContext } from "react";
 
 export default function CategoryList({
@@ -34,7 +34,8 @@ export default function CategoryList({
                 ))}
             </div>
 
-            <div>
+            <div className="flex flex-col">
+                <button onClick={() => void signIn()}>SIGN IN</button>
                 <button onClick={() => void signOut()}>SIGN OUT</button>
             </div>
         </div>
