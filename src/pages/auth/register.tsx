@@ -84,7 +84,7 @@ export default function Register({ providers }: { providers: Provider[] }) {
         };
 
         for (const [key, value] of Object.entries(errorObject)) {
-            console.error(key);
+            console.log(value.reverse());
 
             switch (key) {
                 case "username":
@@ -133,7 +133,6 @@ export default function Register({ providers }: { providers: Provider[] }) {
             setGoToPassword(true);
         } catch (e) {
             if (e instanceof ZodError) {
-                console.log(e.flatten().fieldErrors);
                 handleValidatorError(JSON.stringify(e.flatten().fieldErrors));
             }
         }

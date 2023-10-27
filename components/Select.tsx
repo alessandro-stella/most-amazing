@@ -10,7 +10,7 @@ export default function Select({
     options: string[];
 }) {
     const [selectedOption, setSelectedOption] = useState(options[0] ?? "");
-    const [showOptions, setShowOptions] = useState(true);
+    const [showOptions, setShowOptions] = useState(false);
 
     useEffect(() => {
         select(selectedOption);

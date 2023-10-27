@@ -32,6 +32,9 @@ export default async function register(
                 credentials: {
                     create: { password: hashedPassword },
                 },
+                cart: {
+                    create: {},
+                },
             },
         });
 
