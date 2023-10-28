@@ -1,9 +1,10 @@
-import type { Category, Product } from "@prisma/client";
+import type { Category, Image, Product } from "@prisma/client";
 import CategoryList from "components/homepage/CategoryList";
 import ProductList from "components/homepage/HomePage";
 import NavBar from "components/homepage/NavBar";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import { prisma } from "~/server/db";
 
 /* 
@@ -26,14 +27,22 @@ const categories = [
 */
 
 export default function Home({
-    products,
+    propsProducts,
     categories,
 }: {
-    products: (Product & {
+    propsProducts: (Product & {
         categories: Category[];
+        images: Image[];
     })[];
     categories: Category[];
 }) {
+    const [products, setProducts] = useState(propsProducts);
+
+    useEffect(() => {
+        console.log("IN INDEX");
+        console.log(products);
+    }, [products]);
+
     return (
         <>
             <Head>
@@ -41,7 +50,10 @@ export default function Home({
             </Head>
 
             <div className="flex min-h-screen flex-col">
-                <NavBar categories={categories?.length > 0 ? categories : []} />
+                <NavBar
+                    categories={categories?.length > 0 ? categories : []}
+                    updateProducts={setProducts}
+                />
 
                 <div className="flex w-screen flex-1 ">
                     <CategoryList
@@ -58,15 +70,16 @@ export default function Home({
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    const products: Product[] = await prisma.product.findMany({
-        include: { categories: true },
-    });
+    const products: (Product & { categories: Category[]; images: Image[] })[] =
+        await prisma.product.findMany({
+            include: { categories: true, images: true },
+        });
 
     const categories: Category[] = await prisma.category.findMany({});
 
     return {
         props: {
-            products: products ?? [],
+            propsProducts: products,
             categories,
         },
     };

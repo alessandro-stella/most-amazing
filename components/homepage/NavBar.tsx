@@ -1,17 +1,69 @@
-import { type Category } from "@prisma/client";
+import type { Category, Image as ImageType, Product } from "@prisma/client";
 import Select from "components/Select";
 import CartIcon from "components/homepage/CartIcon";
 import { Context } from "context/Context";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import type { Dispatch, SetStateAction } from "react";
+import { useContext, useState } from "react";
 import { FiBell, FiHeart, FiSearch, FiUser } from "react-icons/fi";
 
-export default function NavBar({ categories }: { categories: Category[] }) {
+export default function NavBar({
+    categories,
+    updateProducts,
+}: {
+    categories: Category[];
+    updateProducts: Dispatch<
+        SetStateAction<
+            ({
+                id: string;
+                name: string;
+                description: string;
+                price: number;
+                shippingPrice: number | null;
+                inStock: number;
+                hasBeenDeleted: boolean;
+                sellerId: string;
+            } & {
+                categories: Category[];
+                images: ImageType[];
+            })[]
+        >
+    >;
+}) {
+    const router = useRouter();
     const { setSelectedCategory } = useContext(Context);
-    const [searchCategory, setSearchCategory] = useState("");
+    const { data: session } = useSession();
+    const [keywords, setKeywords] = useState("");
+    const [searchCategory, setSearchCategory] = useState(0);
 
     function goToHome() {
         setSelectedCategory("");
+    }
+
+    async function handleUser() {
+        if (session) {
+            await router.push("/auth/profile");
+            return;
+        }
+
+        await router.push("/auth/login");
+    }
+
+    async function searchProducts() {
+        const products = (await fetch("/api/products/searchProducts", {
+            method: "POST",
+            body: JSON.stringify({ keywords, category: searchCategory }),
+        }).then((res) => res.json())) as (Product & {
+            categories: Category[];
+            images: ImageType[];
+        })[];
+
+        console.log("IN NAVBAR");
+        console.log(products);
+
+        updateProducts(products);
     }
 
     return (
@@ -45,6 +97,8 @@ export default function NavBar({ categories }: { categories: Category[] }) {
                     type="text"
                     className="flex-1 bg-transparent px-2 text-white outline-none"
                     placeholder="Search..."
+                    value={keywords}
+                    onChange={(e) => setKeywords(e.target.value)}
                 />
 
                 <Select
@@ -55,7 +109,9 @@ export default function NavBar({ categories }: { categories: Category[] }) {
                     ]}
                 />
 
-                <div className="grid aspect-square h-full place-content-center rounded-r-md bg-mint-500 text-white">
+                <div
+                    className="grid aspect-square h-full cursor-pointer place-content-center rounded-r-md bg-mint-500 text-white transition-all hover:brightness-125"
+                    onClick={() => void searchProducts()}>
                     <FiSearch size={20} />
                 </div>
             </div>
@@ -63,18 +119,22 @@ export default function NavBar({ categories }: { categories: Category[] }) {
             <div className="flex justify-end gap-6 text-white">
                 <FiHeart
                     size={30}
-                    className="aspect-square h-full cursor-pointer fill-transparent transition-all hover:fill-mint-400 hover:text-mint-400"
+                    className="aspect-square h-full cursor-pointer fill-transparent transition-all hover:fill-mint-400 hover:text-mint-400 hover:brightness-125"
                 />
 
                 <CartIcon />
 
                 <FiBell
                     size={30}
-                    className="aspect-square h-full cursor-pointer fill-transparent transition-all hover:fill-mint-400 hover:text-mint-400"
+                    className="aspect-square h-full cursor-pointer fill-transparent transition-all hover:fill-mint-400 hover:text-mint-400 hover:brightness-125"
                 />
 
-                <div className="grid aspect-square cursor-pointer place-content-center rounded-full border-2 border-mint-400 text-mint-400 transition-all hover:bg-mint-400 hover:fill-white hover:text-white">
-                    <FiUser size={24} className="aspect-square h-full" />
+                <div className="grid aspect-square cursor-pointer place-content-center rounded-full border-2 border-mint-400 text-mint-400 transition-all hover:bg-mint-400 hover:fill-white hover:text-white hover:brightness-125">
+                    <FiUser
+                        size={24}
+                        className="aspect-square h-full"
+                        onClick={() => void handleUser()}
+                    />
                 </div>
             </div>
         </div>

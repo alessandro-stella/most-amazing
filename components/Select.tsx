@@ -6,17 +6,17 @@ export default function Select({
     select,
     options,
 }: {
-    select: Dispatch<SetStateAction<string>>;
+    select: Dispatch<SetStateAction<number>>;
     options: string[];
 }) {
-    const [selectedOption, setSelectedOption] = useState(options[0] ?? "");
+    const [selectedOption, setSelectedOption] = useState(0);
     const [showOptions, setShowOptions] = useState(false);
 
     useEffect(() => {
         select(selectedOption);
     }, [selectedOption, select]);
 
-    function handleChange(option: string) {
+    function handleChange(option: number) {
         setSelectedOption(option);
         setShowOptions(false);
     }
@@ -29,7 +29,9 @@ export default function Select({
             <div
                 className="flex h-full select-none items-center justify-between gap-4 px-2"
                 onClick={() => setShowOptions(!showOptions)}>
-                <div className="w-max capitalize">{selectedOption}</div>
+                <div className="w-max capitalize">
+                    {options[selectedOption]}
+                </div>
 
                 <MdExpandMore
                     className={`transition-all ${
@@ -48,7 +50,7 @@ export default function Select({
                             index === 0 ? "border-t-[1px] border-slate-400" : ""
                         }`}
                         key={index}
-                        onClick={() => handleChange(option)}>
+                        onClick={() => handleChange(index)}>
                         {option}
                     </div>
                 ))}

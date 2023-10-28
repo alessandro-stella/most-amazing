@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
 import { prisma } from "~/server/db";
 
-export default async function countItemsInCart(
+export default async function countProductsInCart(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
