@@ -1,6 +1,4 @@
 import type { Category, Image, Product } from "@prisma/client";
-import { Context } from "context/Context";
-import { useContext } from "react";
 import ProductCard from "../product/ProductCard";
 import HomeBanner from "./HomeBanner";
 
@@ -12,8 +10,6 @@ export default function HomePage({
         images: Image[];
     })[];
 }) {
-    const { selectedCategory } = useContext(Context);
-
     return (
         <div className="flex-[6] bg-slate-50 p-6">
             <HomeBanner />
